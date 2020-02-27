@@ -1,3 +1,4 @@
+#include <time.h>
 #include "timer.h"
 
 int start_time = 0;

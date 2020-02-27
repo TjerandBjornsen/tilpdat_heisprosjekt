@@ -17,8 +17,6 @@ typedef enum {
     QUEUE_ORDER_DOWN
 } QueueOrder;
 
-void queue_print();
-
 
 /**
  * @brief Places order in queue.
