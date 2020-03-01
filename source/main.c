@@ -27,7 +27,7 @@ static void elevator_floor_arrival(int floor, int* first_order_served, ElevatorS
 static void elevator_floor_stop(int floor, ElevatorState* state);
 static ElevatorState elevator_serve();
 static ElevatorState elevator_stop();
-static int poll_floor_sensors();
+static int read_floor_sensors();
 static void update_queue();
 static void clear_order_lights(int floor);
 static void clear_all_order_lights();
@@ -79,7 +79,7 @@ static ElevatorState elevator_init() {
     m_motor_dir = 2;
 
     while (1) {
-        m_current_floor = poll_floor_sensors(); 
+        m_current_floor = read_floor_sensors(); 
 
         // If in a floor: elevator initialized                    
         if (m_current_floor != -1) {                                                
@@ -206,7 +206,7 @@ static void elevator_floor_stop(int floor, ElevatorState* p_state) {
 
 
 static ElevatorState elevator_serve() {
-    m_current_floor = poll_floor_sensors();
+    m_current_floor = read_floor_sensors();
     
     // Check if started serving between floors
     int started_serving_between_floors = 0;
@@ -226,7 +226,7 @@ static ElevatorState elevator_serve() {
         if (m_next_queue_floor == -1)                                 
             return STATE_IDLE;
 
-        m_current_floor = poll_floor_sensors();
+        m_current_floor = read_floor_sensors();
         elevator_set_motor_direction(&started_serving_between_floors, first_order_served);
 
         // Check if arrived at floor
@@ -294,7 +294,7 @@ static ElevatorState elevator_stop() {
 } 
 
 
-static int poll_floor_sensors() {
+static int read_floor_sensors() {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; ++i) {
         if (hardware_read_floor_sensor(i))
             return i;
