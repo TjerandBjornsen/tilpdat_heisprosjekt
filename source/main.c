@@ -190,13 +190,13 @@ static void elevator_floor_arrival(int floor, int* first_order_served, State* st
     if (m_next_queue_floor == floor) {
         m_above_prev_floor = 0;
         *first_order_served = 1;
-        *state = elevator_floor_stop(floor);
+        elevator_floor_stop(floor, state);
         m_departed_from_floor = 0;
     }
 }
 
 
-static State elevator_floor_stop(int floor) {
+static void elevator_floor_stop(int floor, State* state) {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     hardware_command_door_open(1);
     
@@ -206,12 +206,14 @@ static State elevator_floor_stop(int floor) {
     timer_reset();
 
     while (1) {
-        if (hardware_read_stop_signal())
-            return STATE_STOPPED;
+        if (hardware_read_stop_signal()) {
+            *state = STATE_STOPPED;
+            return;
+        }
 
         if (timer_get_time() >= 3) {
             hardware_command_door_open(0);
-            return STATE_SERVING;
+            return;
         }
 
         if (hardware_read_obstruction_signal()) 

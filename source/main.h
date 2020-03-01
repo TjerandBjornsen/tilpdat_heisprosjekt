@@ -57,7 +57,7 @@ static void elevator_floor_arrival(int floor, int* first_order_served, State* st
  * @brief Deals with stopping at ordered floors.
  * 
  */
-static State elevator_floor_stop(int floor);
+static void elevator_floor_stop(int floor, State* state);
 
 
 /**
