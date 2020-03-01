@@ -22,7 +22,7 @@ typedef enum {
  * @brief Places order in queue.
  *
  */
-void queue_place_order(int to_floor, QueueOrder order_type, int prev_floor, int motor_dir);
+void queue_place_order(int to_floor, QueueOrder order_type, int prev_floor, int above);
 
 
 /**

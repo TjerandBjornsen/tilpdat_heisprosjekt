@@ -290,15 +290,15 @@ static int poll_floor_sensors() {
 static void update_queue() {
     for (int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; ++f) {
         if(hardware_read_order(f, HARDWARE_ORDER_INSIDE)){
-            queue_place_order(f, QUEUE_ORDER_INSIDE, m_prev_floor, m_motor_dir);
+            queue_place_order(f, QUEUE_ORDER_INSIDE, m_prev_floor, m_above_prev_floor);
             hardware_command_order_light(f, HARDWARE_ORDER_INSIDE, 1);
         }
         if(hardware_read_order(f, HARDWARE_ORDER_UP)){
-            queue_place_order(f, QUEUE_ORDER_UP, m_prev_floor, m_motor_dir);
+            queue_place_order(f, QUEUE_ORDER_UP, m_prev_floor, m_above_prev_floor);
             hardware_command_order_light(f, HARDWARE_ORDER_UP, 1);
         }
         if(hardware_read_order(f, HARDWARE_ORDER_DOWN)){
-            queue_place_order(f, QUEUE_ORDER_DOWN, m_prev_floor, m_motor_dir);
+            queue_place_order(f, QUEUE_ORDER_DOWN, m_prev_floor, m_above_prev_floor);
             hardware_command_order_light(f, HARDWARE_ORDER_DOWN, 1);
         }
     }

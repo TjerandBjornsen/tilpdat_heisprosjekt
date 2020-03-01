@@ -6,33 +6,53 @@
 static int m_up_queue[4] = {0, 0, 0, 0};
 static int m_down_queue[4] = {0, 0, 0, 0};
 
+/*
+På vei opp:
+    4 et i oppkø
+    Opp_bestillinger i oppkø
+    Inside_bestillinger i oppkø hvis to_floor > prev_floor
+    else i nedkø
+    Ned_bestillinger i nedkø
 
-void queue_place_order(int ordered_floor, QueueOrder order_type, int prev_floor, int motor_dir) {
-    switch (motor_dir) {
-    case 0:             
-        if (ordered_floor == QUEUE_NUMBER_OF_FLOORS - 1)   
-            m_up_queue[ordered_floor] = 1;
-        else if (ordered_floor > prev_floor && !(order_type == QUEUE_ORDER_DOWN)) 
-            m_up_queue[ordered_floor] = 1;
-        else 
-            m_down_queue[ordered_floor] = 1;
-        break;
+På vei ned:
+    1 et i nedkø
+    ned_bestillinger i nedkø
+*/
 
-    case 2:            
-        if (ordered_floor == 0) 
+
+void queue_place_order(int ordered_floor, QueueOrder order_type, int prev_floor, int above) {
+    if (ordered_floor == QUEUE_NUMBER_OF_FLOORS - 1) 
+        m_up_queue[ordered_floor] = 1;
+
+    else if (ordered_floor == 0) 
+        m_down_queue[ordered_floor] = 1;
+
+    else if (order_type == QUEUE_ORDER_UP) 
+        m_up_queue[ordered_floor] = 1;
+
+    else if (order_type == QUEUE_ORDER_DOWN) 
+        m_down_queue[ordered_floor] = 1;
+
+    else if (order_type == QUEUE_ORDER_INSIDE) {
+        if (ordered_floor == prev_floor) {
+            if (above) 
+                m_down_queue[ordered_floor] = 1;
+            else 
+                m_up_queue[ordered_floor] = 1;
+        }
+
+        else if (ordered_floor > prev_floor )
+            m_up_queue[ordered_floor] = 1;
+
+        else if (ordered_floor < prev_floor) 
             m_down_queue[ordered_floor] = 1;
-        else if (ordered_floor < prev_floor && !(order_type == QUEUE_ORDER_UP))
-            m_down_queue[ordered_floor] = 1;
-        else 
-            m_up_queue[ordered_floor] = 1;          
-        break;
     }
 }
 
 
 int queue_read(int prev_floor, int motor_dir) {
     switch (motor_dir){
-    case 0:         
+    case 0:
         for (int i = prev_floor; i < QUEUE_NUMBER_OF_FLOORS; ++i){ 
             if (m_up_queue[i] == 1)
                 return i;
