@@ -106,6 +106,7 @@ static State elevator_serve() {
     if (m_current_floor == -1) {
         started_serving_between_floors = 1;
         first_order_served = 0;
+        m_next_queue_floor = queue_read(m_prev_floor, m_motor_dir);
     }
     
     while (1) {
@@ -113,7 +114,9 @@ static State elevator_serve() {
             return STATE_STOPPED;
 
         update_queue();
-        m_next_queue_floor = queue_read(m_prev_floor, m_motor_dir);
+        if (first_order_served) {
+            m_next_queue_floor = queue_read(m_prev_floor, m_motor_dir);
+        }
     
         if (m_next_queue_floor == -1)                                 
             return STATE_IDLE;

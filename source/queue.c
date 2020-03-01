@@ -6,19 +6,6 @@
 static int m_up_queue[4] = {0, 0, 0, 0};
 static int m_down_queue[4] = {0, 0, 0, 0};
 
-/*
-På vei opp:
-    4 et i oppkø
-    Opp_bestillinger i oppkø
-    Inside_bestillinger i oppkø hvis to_floor > prev_floor
-    else i nedkø
-    Ned_bestillinger i nedkø
-
-På vei ned:
-    1 et i nedkø
-    ned_bestillinger i nedkø
-*/
-
 
 void queue_place_order(int ordered_floor, QueueOrder order_type, int prev_floor, int above) {
     if (ordered_floor == QUEUE_NUMBER_OF_FLOORS - 1) 
@@ -41,7 +28,7 @@ void queue_place_order(int ordered_floor, QueueOrder order_type, int prev_floor,
                 m_up_queue[ordered_floor] = 1;
         }
 
-        else if (ordered_floor > prev_floor )
+        else if (ordered_floor > prev_floor)
             m_up_queue[ordered_floor] = 1;
 
         else if (ordered_floor < prev_floor) 
@@ -53,23 +40,31 @@ void queue_place_order(int ordered_floor, QueueOrder order_type, int prev_floor,
 int queue_read(int prev_floor, int motor_dir) {
     switch (motor_dir){
     case 0:
-        for (int i = prev_floor; i < QUEUE_NUMBER_OF_FLOORS; ++i){ 
+        for (int i = prev_floor + 1; i < QUEUE_NUMBER_OF_FLOORS; ++i){ 
             if (m_up_queue[i] == 1)
                 return i;
         }
         for (int i = QUEUE_NUMBER_OF_FLOORS - 1; i > -1; --i){
             if (m_down_queue[i] == 1)
                 return i;
+        }
+        for (int i = 0; i <= prev_floor; ++i) {
+            if (m_up_queue[i] == 1) 
+                return i;
         } 
         break;
 
     case 2:         
-        for (int i = prev_floor; i > -1; --i){ 
+        for (int i = prev_floor - 1; i > -1; --i){ 
             if (m_down_queue[i] == 1)
                 return i;
         }
         for (int i = 0; i < QUEUE_NUMBER_OF_FLOORS; ++i){ 
             if (m_up_queue[i] == 1)
+                return i;
+        }
+        for (int i = QUEUE_NUMBER_OF_FLOORS - 1; i >= prev_floor; --i) {
+            if (m_down_queue[i] == 1) 
                 return i;
         }
         break;
