@@ -7,12 +7,7 @@
 #define MAIN_H
 
 
-typedef enum {
-    STATE_UNDEFINED,
-    STATE_IDLE,
-    STATE_SERVING,
-    STATE_STOPPED
-} State;
+
 
 
 /**
@@ -20,7 +15,7 @@ typedef enum {
  * 
  * @return STATE_IDLE.
  */ 
-static State elevator_init();
+
 
 
 /**
@@ -28,7 +23,7 @@ static State elevator_init();
  * 
  * @return STATE_SERVE if order in queue; STATE_STOPPED if stop button is pressed.
  */
-static State elevator_idle();
+
 
 
 /**
@@ -36,28 +31,28 @@ static State elevator_idle();
  * 
  * @return STATE_IDLE if queue empty; STATE_STOPPED if stop button is pressed.
  */
-static State elevator_serve();
+
 
 
 /**
  * @brief Sets motor direction towards target floor.
  * 
  */
-static void elevator_set_motor_direction(int* started_between_floors, int first_order_served);
+
 
 
 /**
  * @brief 
  *
  */
-static void elevator_floor_arrival(int floor, int* first_order_served, State* state);
+
 
 
 /**
  * @brief Deals with stopping at ordered floors.
  * 
  */
-static void elevator_floor_stop(int floor, State* state);
+
 
 
 /**
@@ -65,7 +60,7 @@ static void elevator_floor_stop(int floor, State* state);
  *
  * @return STATE_IDLE if stop button not pressed. 
  */
-static State elevator_stop();
+
 
 
 /**
@@ -73,34 +68,34 @@ static State elevator_stop();
  * 
  * @return The floor number. -1 if not in floor.
  */
-static int poll_floor_sensors();
+
 
 
 /**
  * @brief Polls order buttons and places orders in queue.
  * 
  */
-static void update_queue();
+
 
 
 /**
  * @brief Clears order lights for given floor.
  * 
  */
-static void clear_order_lights(int floor);
+
 
 
 /**
  * @brief Clears all order lights.
  * 
  */
-static void clear_all_order_lights();
+
 
 
 /**
  * @brief Enables interrupt for stopping elevator upon program exit.
  * 
  */
-static void sigint_handler(int sig);
+
 
 #endif

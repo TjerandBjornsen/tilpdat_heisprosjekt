@@ -1,20 +1,20 @@
 /**
  * @file
- * @brief Timer module. Stores a start time and returns the difference of start time and current time.
+ * @brief Timer module. 
  *
  */
 #ifndef TIMER_H
 #define TIMER_H
 
 /**
- * @brief Resets timer.
+ * @brief Set current time as start time.
  * 
  */
 void timer_reset();
 
 
 /**
- * @brief Gets the time since last reset.
+ * @brief Get the time since start time.
  * 
  * @return Difference in seconds.
  * 
